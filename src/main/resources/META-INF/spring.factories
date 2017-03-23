@@ -1,4 +1,4 @@
 com.canaban.config.EnableSpringMVCRxJava2=/
-com.canaban.handler.ExceptionHandler=/
+com.canaban.exception.ExceptionHandler=/
 com.canaban.config.Emmiter
 

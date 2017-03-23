@@ -1,5 +1,6 @@
 package com.canaban.handler;
 
+import com.canaban.exception.ExceptionHandler;
 import io.reactivex.Single;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.MethodParameter;
@@ -14,7 +15,7 @@ import org.springframework.web.method.support.ModelAndViewContainer;
  * Created by antongusev on 15.03.17.
  */
 @Component
-public class SingleReturnValueHandler implements AsyncHandlerMethodReturnValueHandler {
+public class SingleReturnValueHandler implements AsyncHandlerMethodReturnValueHandler, DefaultHandler {
 
     @Autowired
     private ExceptionHandler exceptionHandler;
@@ -36,5 +37,10 @@ public class SingleReturnValueHandler implements AsyncHandlerMethodReturnValueHa
         single.subscribe(deferredResult::setResult, error -> exceptionHandler.handleException(deferredResult, (Throwable) error));
         WebAsyncUtils.getAsyncManager(nativeWebRequest)
                 .startDeferredResultProcessing(deferredResult, modelAndViewContainer);
+    }
+
+    @Override
+    public ExceptionHandler getExceptionHandler() {
+        return exceptionHandler;
     }
 }

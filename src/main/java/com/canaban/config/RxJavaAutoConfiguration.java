@@ -24,7 +24,7 @@ import java.util.List;
 /**
  * Created by antongusev on 15.03.17.
  */
-@ComponentScan(basePackages = {"com.canaban.bpp", "com.canaban.handler"})
+@ComponentScan(basePackages = {"com.canaban.bpp", "com.canaban.handler", "com.canaban.exception"})
 public class RxJavaAutoConfiguration {
 
     public static void main(String[] args) {

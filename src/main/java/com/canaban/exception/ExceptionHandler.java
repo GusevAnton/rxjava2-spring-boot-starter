@@ -1,4 +1,4 @@
-package com.canaban.handler;
+package com.canaban.exception;
 
 import org.springframework.web.context.request.async.DeferredResult;
 

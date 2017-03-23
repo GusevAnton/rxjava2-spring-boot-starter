@@ -1,4 +1,4 @@
-package com.canaban.handler;
+package com.canaban.exception;
 
 import com.canaban.dto.Error;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;

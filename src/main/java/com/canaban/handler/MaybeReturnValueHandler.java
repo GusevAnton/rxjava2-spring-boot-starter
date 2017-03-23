@@ -1,12 +1,11 @@
 package com.canaban.handler;
 
+import com.canaban.exception.ExceptionHandler;
 import io.reactivex.Maybe;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.MethodParameter;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.NativeWebRequest;
-import org.springframework.web.context.request.async.DeferredResult;
-import org.springframework.web.context.request.async.WebAsyncUtils;
 import org.springframework.web.method.support.AsyncHandlerMethodReturnValueHandler;
 import org.springframework.web.method.support.ModelAndViewContainer;
 
@@ -14,7 +13,7 @@ import org.springframework.web.method.support.ModelAndViewContainer;
  * Created by antongusev on 17.03.17.
  */
 @Component
-public class MaybeReturnValueHandler implements AsyncHandlerMethodReturnValueHandler {
+public class MaybeReturnValueHandler implements AsyncHandlerMethodReturnValueHandler, DefaultHandler {
 
     @Autowired
     private ExceptionHandler exceptionHandler;
@@ -31,10 +30,11 @@ public class MaybeReturnValueHandler implements AsyncHandlerMethodReturnValueHan
 
     @Override
     public void handleReturnValue(Object response, MethodParameter methodParameter, ModelAndViewContainer modelAndViewContainer, NativeWebRequest nativeWebRequest) throws Exception {
-        final Maybe single = (Maybe) response;
-        final DeferredResult deferredResult = new DeferredResult();
-        single.subscribe(deferredResult::setResult, error -> exceptionHandler.handleException(deferredResult, (Throwable) error));
-        WebAsyncUtils.getAsyncManager(nativeWebRequest)
-                .startDeferredResultProcessing(deferredResult, modelAndViewContainer);
+        handle(response, methodParameter, modelAndViewContainer, nativeWebRequest);
+    }
+
+    @Override
+    public ExceptionHandler getExceptionHandler() {
+        return exceptionHandler;
     }
 }

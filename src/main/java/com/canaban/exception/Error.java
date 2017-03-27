@@ -1,4 +1,4 @@
-package com.canaban.dto;
+package com.canaban.exception;
 
 import lombok.Data;
 

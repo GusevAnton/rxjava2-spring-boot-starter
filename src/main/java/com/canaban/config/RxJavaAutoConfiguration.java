@@ -6,6 +6,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.context.request.async.DeferredResult;
 import org.springframework.web.method.support.AsyncHandlerMethodReturnValueHandler;
 import org.springframework.web.method.support.HandlerMethodReturnValueHandler;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
@@ -18,11 +19,16 @@ import java.util.List;
  * Created by antongusev on 15.03.17.
  */
 @SpringBootApplication
-@ComponentScan(basePackages = {"com.canaban.handler", "com.canaban.exception", "com.canaban.dto"})
+@ComponentScan(basePackages = {"com.canaban.handler", "com.canaban.exception"})
 public class RxJavaAutoConfiguration {
 
     public static void main(String[] args) {
         SpringApplication.run(RxJavaAutoConfiguration.class, args);
+    }
+
+    @Bean
+    public DeferredResult deferredResult() {
+        return new DeferredResult();
     }
 
     @Configuration

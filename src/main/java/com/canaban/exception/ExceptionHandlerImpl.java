@@ -1,6 +1,5 @@
 package com.canaban.exception;
 
-import com.canaban.dto.Error;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

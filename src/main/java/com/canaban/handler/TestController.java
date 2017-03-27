@@ -1,7 +1,7 @@
 package com.canaban.handler;
 
-import com.canaban.config.Emmiter;
 import io.reactivex.Flowable;
+import io.reactivex.Maybe;
 import io.reactivex.parallel.ParallelFlowable;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,8 +25,8 @@ public class TestController {
 //    }
 
     @GetMapping("/test")
-    public Flowable test1() {
-        return Flowable.fromCallable(() -> 1000).map(i -> i * i);
+    public Maybe test1() {
+        return Maybe.fromCallable(() -> 1000).map(i -> i * i);
     }
 
 //    @Emmiter
@@ -36,7 +36,7 @@ public class TestController {
 //                .map(res -> {throw new BadRequestException();});
 //    }
 
-    @Emmiter
+//    @Emmiter
     @GetMapping("/test3")
     public ParallelFlowable<Integer> parallelTest2() {
         return Flowable.fromCallable(() -> IntStream.range(0, 100).boxed().collect(Collectors.toList()))

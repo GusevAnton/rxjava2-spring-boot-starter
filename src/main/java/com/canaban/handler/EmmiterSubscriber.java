@@ -2,6 +2,11 @@ package com.canaban.handler;
 
 import org.reactivestreams.Subscriber;
 import org.reactivestreams.Subscription;
+import org.springframework.beans.factory.config.ConfigurableBeanFactory;
+import org.springframework.context.annotation.Scope;
+import org.springframework.context.annotation.ScopedProxyMode;
+import org.springframework.stereotype.Component;
+import org.springframework.web.context.request.async.DeferredResult;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyEmitter;
 
 import java.io.IOException;
@@ -9,17 +14,13 @@ import java.io.IOException;
 /**
  * Created by antongusev on 27.03.17.
  */
+@Component
+@Scope(scopeName = ConfigurableBeanFactory.SCOPE_PROTOTYPE, proxyMode = ScopedProxyMode.TARGET_CLASS)
 public class EmmiterSubscriber implements Subscriber {
 
-    private ResponseBodyEmitter responseBodyEmitter;
+    private DeferredResult deferredResult = new DeferredResult();
 
-    public ResponseBodyEmitter getResponseBodyEmmiter() {
-        return responseBodyEmitter;
-    }
-
-    public EmmiterSubscriber(ResponseBodyEmitter responseBodyEmitter) {
-        this.responseBodyEmitter = responseBodyEmitter;
-    }
+    private ResponseBodyEmitter responseBodyEmitter = new ResponseBodyEmitter();
 
     @Override
     public void onSubscribe(Subscription subscription) {
@@ -44,4 +45,10 @@ public class EmmiterSubscriber implements Subscriber {
     public void onComplete() {
         responseBodyEmitter.complete();
     }
+
+    public DeferredResult getDeferredResult() {
+        deferredResult.setResult(responseBodyEmitter);
+        return deferredResult;
+    }
+
 }

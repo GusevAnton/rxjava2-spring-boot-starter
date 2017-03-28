@@ -19,7 +19,7 @@ import java.util.List;
  * Created by antongusev on 15.03.17.
  */
 @SpringBootApplication
-@ComponentScan(basePackages = {"com.canaban.handler", "com.canaban.exception"})
+@ComponentScan(basePackages = {"com.canaban.handler", "com.canaban.exception", "com.canaban.subscriber"})
 public class RxJavaAutoConfiguration {
 
     public static void main(String[] args) {

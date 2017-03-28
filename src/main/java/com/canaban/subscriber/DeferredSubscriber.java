@@ -1,7 +1,7 @@
-package com.canaban.handler;
+package com.canaban.subscriber;
 
 import com.canaban.exception.ExceptionHandler;
-import org.reactivestreams.Subscriber;
+import io.reactivex.disposables.Disposable;
 import org.reactivestreams.Subscription;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
@@ -15,7 +15,7 @@ import org.springframework.web.context.request.async.DeferredResult;
  */
 @Component
 @Scope(scopeName = WebApplicationContext.SCOPE_REQUEST, proxyMode = ScopedProxyMode.TARGET_CLASS)
-public class DeferredSubscriber implements Subscriber {
+public class DeferredSubscriber implements SpringSubscriber {
 
     private DeferredResult deferredResult = new DeferredResult();
 
@@ -33,13 +33,23 @@ public class DeferredSubscriber implements Subscriber {
     }
 
     @Override
+    public void onSubscribe(Disposable d) {
+
+    }
+
+    @Override
+    public void onSuccess(Object o) {
+         deferredResult.setResult(o);
+    }
+
+    @Override
     public void onError(Throwable throwable) {
         exceptionHandler.handleException(deferredResult, throwable);
     }
 
     @Override
     public void onComplete() {
-        System.out.println("COMPLETE");
+
     }
 
     public DeferredResult getDeferredResult() {

@@ -2,6 +2,8 @@ package com.canaban.handler;
 
 import io.reactivex.Flowable;
 import io.reactivex.Maybe;
+import io.reactivex.Observable;
+import io.reactivex.Single;
 import io.reactivex.parallel.ParallelFlowable;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -24,9 +26,24 @@ public class TestController {
 //        });
 //    }
 
-    @GetMapping("/test")
-    public Maybe test1() {
+    @GetMapping("/flowable")
+    public Flowable flowable() {
+        return Flowable.fromCallable(() -> 1000).map(i -> i * i);
+    }
+
+    @GetMapping("/single")
+    public Single single() {
+        return Single.fromCallable(() -> 1000).map(i -> i * i);
+    }
+
+    @GetMapping("/maybe")
+    public Maybe maybe() {
         return Maybe.fromCallable(() -> 1000).map(i -> i * i);
+    }
+
+    @GetMapping("/observable")
+    public Observable observable() {
+        return Observable.fromCallable(() -> 1000).map(i -> i * i);
     }
 
 //    @Emmiter

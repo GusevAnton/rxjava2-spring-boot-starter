@@ -1,6 +1,6 @@
-package com.canaban.handler;
+package com.canaban.subscriber;
 
-import org.reactivestreams.Subscriber;
+import io.reactivex.disposables.Disposable;
 import org.reactivestreams.Subscription;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Scope;
@@ -16,7 +16,7 @@ import java.io.IOException;
  */
 @Component
 @Scope(scopeName = ConfigurableBeanFactory.SCOPE_PROTOTYPE, proxyMode = ScopedProxyMode.TARGET_CLASS)
-public class EmmiterSubscriber implements Subscriber {
+public class EmmiterSubscriber implements SpringSubscriber {
 
     private DeferredResult deferredResult = new DeferredResult();
 
@@ -34,6 +34,16 @@ public class EmmiterSubscriber implements Subscriber {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public void onSubscribe(Disposable d) {
+
+    }
+
+    @Override
+    public void onSuccess(Object o) {
+
     }
 
     @Override

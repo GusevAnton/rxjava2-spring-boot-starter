@@ -1,5 +1,6 @@
 package com.canaban.handler;
 
+import com.canaban.config.Emmiter;
 import io.reactivex.Flowable;
 import io.reactivex.Maybe;
 import io.reactivex.Observable;
@@ -26,9 +27,11 @@ public class TestController {
 //        });
 //    }
 
+    @Emmiter
     @GetMapping("/flowable")
     public Flowable flowable() {
-        return Flowable.fromCallable(() -> 1000).map(i -> i * i);
+        return Flowable.range(1, 10000)
+                .map(i -> i * i);
     }
 
     @GetMapping("/single")

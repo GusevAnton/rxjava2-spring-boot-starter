@@ -61,4 +61,13 @@ public class EmmiterSubscriber implements SpringSubscriber {
         return deferredResult;
     }
 
+    @Override
+    public void dispose() {
+
+    }
+
+    @Override
+    public boolean isDisposed() {
+        return true;
+    }
 }

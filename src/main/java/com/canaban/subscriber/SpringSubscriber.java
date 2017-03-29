@@ -11,7 +11,7 @@ import org.springframework.web.context.request.async.DeferredResult;
 /**
  * Created by antongusev on 28.03.17.
  */
-public interface SpringSubscriber extends Subscriber, MaybeObserver, SingleObserver, Observer {
+public interface SpringSubscriber extends Disposable, Subscriber, MaybeObserver, SingleObserver, Observer {
 
     void onSubscribe(Subscription subscription);
 

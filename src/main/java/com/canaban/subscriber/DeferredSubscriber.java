@@ -55,5 +55,15 @@ public class DeferredSubscriber implements SpringSubscriber {
     public DeferredResult getDeferredResult() {
         return deferredResult;
     }
+
+    @Override
+    public void dispose() {
+
+    }
+
+    @Override
+    public boolean isDisposed() {
+        return true;
+    }
 }
 

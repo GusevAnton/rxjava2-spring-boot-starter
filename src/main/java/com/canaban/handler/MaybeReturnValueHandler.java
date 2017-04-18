@@ -1,14 +1,12 @@
 package com.canaban.handler;
 
 import com.canaban.subscriber.DeferredSubscriber;
-import com.canaban.subscriber.EmmiterSubscriber;
 import io.reactivex.Maybe;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.MethodParameter;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.NativeWebRequest;
-import org.springframework.web.context.request.async.DeferredResult;
 import org.springframework.web.context.request.async.WebAsyncUtils;
 import org.springframework.web.method.support.ModelAndViewContainer;
 
@@ -21,9 +19,6 @@ public class MaybeReturnValueHandler implements DefaultHandler {
 
     @Autowired
     private DeferredSubscriber deferredSubscriber;
-
-    @Autowired
-    private EmmiterSubscriber emmiterSubscriber;
 
     @Override
     public boolean isAsyncReturnValue(Object response, MethodParameter methodParameter) {
@@ -38,9 +33,9 @@ public class MaybeReturnValueHandler implements DefaultHandler {
     @Override
     public void handleReturnValue(Object response, MethodParameter methodParameter, ModelAndViewContainer modelAndViewContainer, NativeWebRequest nativeWebRequest) throws Exception {
         Maybe maybe = (Maybe) response;
-        DeferredResult deferredResult = handle(maybe, methodParameter);
+        maybe.subscribe(getDeferredSubscriber());
         WebAsyncUtils.getAsyncManager(nativeWebRequest)
-                .startDeferredResultProcessing(deferredResult, modelAndViewContainer);
+                .startDeferredResultProcessing(getDeferredSubscriber().getDeferredResult(), modelAndViewContainer);
     }
 
     @Override
@@ -48,8 +43,4 @@ public class MaybeReturnValueHandler implements DefaultHandler {
         return deferredSubscriber;
     }
 
-    @Override
-    public EmmiterSubscriber getEmmiterSubscriber() {
-        return emmiterSubscriber;
-    }
 }

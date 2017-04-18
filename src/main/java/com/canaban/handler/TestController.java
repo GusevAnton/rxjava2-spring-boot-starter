@@ -1,37 +1,31 @@
 package com.canaban.handler;
 
-import com.canaban.config.Emmiter;
 import io.reactivex.Flowable;
 import io.reactivex.Maybe;
 import io.reactivex.Observable;
 import io.reactivex.Single;
-import io.reactivex.parallel.ParallelFlowable;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.messaging.handler.annotation.SendTo;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
 
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
+import java.util.ArrayList;
 
 /**
  * Created by antongusev on 18.03.17.
  */
 @Slf4j
-@RestController
+@Controller
 public class TestController {
 
-//    @GetMapping
-//    public Flowable<String> test() {
-//        return Flowable.fromCallable(() -> {
-//            throw new BadRequestException();
-//        });
-//    }
-
-    @Emmiter
     @GetMapping("/flowable")
-    public Flowable flowable() {
-        return Flowable.range(1, 10000)
-                .map(i -> i * i);
+    public Single flowable() {
+        return Flowable.range(1, 100000)
+                .map(i -> i * i).doOnNext((v) -> log.info("zozozozo")).reduce(new ArrayList(), (list, value) -> {
+                    list.add(value);
+                    return list;
+                });
     }
 
     @GetMapping("/single")
@@ -49,19 +43,11 @@ public class TestController {
         return Observable.fromCallable(() -> 1000).map(i -> i * i);
     }
 
-//    @Emmiter
-//    @GetMapping("/test2")
-//    public Flowable<Integer> test2() {
-//        return Flowable.fromCallable(() -> IntStream.range(0, 100).boxed().collect(Collectors.toList()))
-//                .map(res -> {throw new BadRequestException();});
-//    }
-
-//    @Emmiter
-    @GetMapping("/test3")
-    public ParallelFlowable<Integer> parallelTest2() {
-        return Flowable.fromCallable(() -> IntStream.range(0, 100).boxed().collect(Collectors.toList()))
-                .flatMap(Flowable::fromIterable)
-                .parallel().map(i -> i*i).doOnNext(res -> log.info("{}", res));
+    @MessageMapping("/hello")
+    @SendTo("/topic/greetings")
+    public String greeting() throws Exception {
+        Thread.sleep(1000);
+        return new String("1234567890");
     }
 
 }
